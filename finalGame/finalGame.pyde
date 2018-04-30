@@ -6,11 +6,13 @@ class Game:
         self.y=0
         self.h=800
         self.g=700
-        self.player=Player(500,700,30,900)
+        self.player=Player(500,700,30,900,0)
         self.score=0
         self.cnt=0
         self.platforms=[]
         self.cars=[]
+        self.car=Car(0, 400, 40, 400,2)
+        self.car1=Car(1024, 600, 40, 400,-2)
         
     #def createGame(self):
        
@@ -19,21 +21,20 @@ class Game:
         #stroke(255)
         #line(0,self.g,self.w,self.g)
         self.player.display()
-        text(str(self.score),10,25) 
-
+        self.car.display()
+        self.car1.display()
+        #for future score counting
+        text(str(self.score),10,25)
         
-        
-    
-    
 class Creature:
-    def __init__(self,x,y,r,g):
+    def __init__(self,x,y,r,g,vx):
         self.x=x
         self.y=y
         self.g=g
         self.r=r
         self.w=self.r*2
         self.h=self.r*2
-        self.vx=0
+        self.vx=vx
         self.vy=0
         self.dir=1
         
@@ -53,8 +54,8 @@ class Creature:
     
     
 class Player(Creature):
-    def __init__(self,x,y,r,g):
-        Creature.__init__(self,x,y,r,g)
+    def __init__(self,x,y,r,g,vx):
+        Creature.__init__(self,x,y,r,g,vx)
         self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
         
     def update(self):
@@ -81,11 +82,15 @@ class Player(Creature):
         self.y+=self.vy
             
     
-#class Cars(Creature):
+class Car(Creature):
+    def __init__(self,x,y,r,g,vx): 
+        Creature.__init__(self,x,y,r,g,vx)
+        
+    def update 
+        
+         
     
-
-
-
+    
 
 #class Food(Creature):
     
