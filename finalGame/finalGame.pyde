@@ -3,16 +3,23 @@ class Game:
     def __init__(self):
         self.w=1024
         self.x=0
+        self.y=0
         self.h=800
         self.g=700
-        self.player=Creature(500,700,30,900)
+        self.player=Player(500,700,30,900)
+        self.score=0
+        self.cnt=0
+        self.platforms=[]
+        self.cars=[]
         
     #def createGame(self):
        
     def display(self):
-        stroke(255)
-        line(0,self.g,self.w,self.g)
+        #fill(255)
+        #stroke(255)
+        #line(0,self.g,self.w,self.g)
         self.player.display()
+        text(str(self.score),10,25) 
 
         
         
@@ -28,6 +35,7 @@ class Creature:
         self.h=self.r*2
         self.vx=0
         self.vy=0
+        self.dir=1
         
     def update(self):
 
@@ -36,7 +44,7 @@ class Creature:
  
     def display(self):
         self.update()
-        stroke(255,255,50)
+        stroke(0,255,40)
         noFill()
         ellipse(self.x-game.x,self.y,self.r*2,self.r*2)
         stroke(255,50,0)
@@ -44,9 +52,42 @@ class Creature:
             
     
     
-#class Chicken(Creature):
+class Player(Creature):
+    def __init__(self,x,y,r,g):
+        Creature.__init__(self,x,y,r,g)
+        self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
+        
+    def update(self):
+        print self.keyHandler
+        if self.keyHandler[DOWN]:
+            self.vy=2
+            self.dir=1
+        elif self.keyHandler[UP]:
+            self.vy=-2
+            self.dir=-1
+        else:
+            self.vy=0
+        
+        if self.keyHandler[LEFT]:
+            self.vx=-2
+            self.dir=-1
+        elif self.keyHandler[RIGHT]:
+            self.vx=2
+            self.dir=1
+        else: 
+            self.vx=0
+            
+        self.x+=self.vx
+        self.y+=self.vy
+            
     
 #class Cars(Creature):
+    
+
+
+
+
+#class Food(Creature):
     
 
 
@@ -61,4 +102,11 @@ def setup():
 def draw():
     background(0)
     game.display()
+    
+def keyPressed():
+    print (keyCode)
+    game.player.keyHandler[keyCode]=True
+         
+def keyReleased():
+    game.player.keyHandler[keyCode]=False
         
