@@ -20,7 +20,7 @@ class Game:
         self.cars.append(Car(1024, 600, 40,-2))
         
         #Creating warms 
-         
+    
         
     def display(self):
         #fill(255)
@@ -28,8 +28,9 @@ class Game:
         #line(0,self.g,self.w,self.g)
         self.player.display()
         for p in self.cars:
-            p.display()
-
+            while p.display(): 
+                self.cars.remove(p)
+                
             
         #for future score counting
         text(str(self.score),10,25)
@@ -55,6 +56,7 @@ class Creature:
         noFill()
         ellipse(self.x-game.x,self.y,self.r*2,self.r*2)
         stroke(255,50,0)
+        
         
 
 class Player(Creature):
@@ -97,23 +99,21 @@ class Player(Creature):
 class Car(Creature):
     def __init__(self,x,y,r,vx): 
         Creature.__init__(self,x,y,r,vx)
+        self.delete=False
     
         
     #Working on the way to delete cars that go out of frame
-    # def update(self):
-         #deleting after exiting the game screen   
-        # if self.x == 0-2*self.r or self.x == self.w+2*self.r: 
-        #     self.cars.remove()
-         
-        
+    def update(self):
+        Creature.update(self)
+        if self.x == (0-self.r) or self.x==(game.w+self.r):
+            self.delete=True 
+        return self.delete
+
 
 class Food(Creature):
     def __init__(self,x,y,r,vx): 
         Creature.__init__(self,x,y,r,vx) 
     
-
-
-
 game = Game()
 
 def setup():
