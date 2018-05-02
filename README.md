@@ -4,7 +4,7 @@ PLAN
   1.1) Class for the Creatures /DONE 
   1.2) Making the Player move /DONE 
   1.3) Making the obstacles move /DONE 
-    1.3.1) Making their speed dependent on score 
+    1.3.1) Making their speed dependent on score /IN PROGRESS
   1.4) Creating the reappearing food/wamrs 
   1.5) Collosion /IN PROGRESS 
     1.5.1) Different outcomes with Food or Cars 
@@ -13,9 +13,16 @@ PLAN
   1.7) Creating a scoring system 
   1.8) Creating a lives system 
     1.8.1) Maybe creating an opportunity to earn extra lives, appearing heart shapes from time to time 
+2) Create the framework for the game 
+  2.1) Initial screen
+    2.1.1) Play button 
+      2.1.1.1) "Please eneter you name: " To save for the leaderboard thing 
+    2.1.2) Character choice 
+    2.1.3) Leaderboard 
+  2.2) Pause screen 
+  2.3) Game over screen and display of all previous scores
  
-  
-2) Adding the graphics 
-  2.1) Spritesheet for the chicken /FOUND(Kertu has) 
-  2.2) General Background /Deniz in progress 
-  2.3) Warms and cars 
+3) Adding the graphics 
+  3.1) Spritesheet for the chicken /FOUND(Kertu has) 
+  3.2) General Background /Deniz in progress 
+  3.3) Warms and cars 
