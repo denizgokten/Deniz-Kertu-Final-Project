@@ -6,7 +6,7 @@ PLAN
   - Making the obstacles move /DONE 
   - Continuous generation of cars
     - Making their speed dependent on score /IN PROGRESS
-  1.4) Creating the reappearing food/wamrs 
+  - Creating the reappearing food/wamrs 
   1.5) Collosion /IN PROGRESS 
     1.5.1) Different outcomes with Food or Cars 
     1.5.2) Disabling it for the duration of 'fly-back' when the player dies and has to return to the initial position 
