@@ -3,25 +3,37 @@ import random
 class Game:
     def __init__(self):
         self.w=1024
-        self.x=0
-        self.y=0
         self.h=800
         self.g=700
         self.player=Player(500,700,30,0)
+        self.paused= False
+        self.state='MENU'
+        self.name= ''
         self.score=0
-        self.cnt=0
-        self.warms=[]
-        self.cars=[]
-    
-    
+
     def createGame(self):
+        self.x=0
+        self.y=0
+        self.cnt=0
+        self.chicks=[]
+        self.cars=[]
+        
         #Creating different cars 
         self.cars.append(Car(0, 400, 40,2)) 
         self.cars.append(Car(1024, 600, 40,-2))
-        
-        #Creating warms 
-    
-        
+        self.cars.append(Car(1000, 200, 40,-2))
+        self.cars.append(Car(500, 300, 40,-2))
+        self.cars.append(Car(200, 200, 40,-2))
+
+
+        #Creating worms/baby chicks
+        self.chicks.append(babyChick(150,300,10,1))
+        self.chicks.append(babyChick(400,400,10,1))
+        self.chicks.append(babyChick(700,300,10,1))
+        self.chicks.append(babyChick(800,500,10,1))
+        self.chicks.append(babyChick(350,200,10,1))
+        self.chicks.append(babyChick(250,600,10,1))
+
     def display(self):
         #fill(255)
         #stroke(255)
@@ -30,6 +42,8 @@ class Game:
         for p in self.cars:
             while p.display(): 
                 self.cars.remove(p)
+        for c in self.chicks:
+            c.display()
                 
             
         #for future score counting
@@ -110,9 +124,13 @@ class Car(Creature):
         return self.delete
 
 
-class Food(Creature):
+class babyChick(Creature):
     def __init__(self,x,y,r,vx): 
         Creature.__init__(self,x,y,r,vx) 
+        self.vx=1
+        
+    def update(self):
+        pass
     
 game = Game()
 
