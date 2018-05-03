@@ -4,6 +4,7 @@ PLAN
   - Class for the Creatures /DONE 
   - Making the Player move /DONE 
   - Making the obstacles move /DONE 
+  - Continuous generation of cars
     - Making their speed dependent on score /IN PROGRESS
   1.4) Creating the reappearing food/wamrs 
   1.5) Collosion /IN PROGRESS 
