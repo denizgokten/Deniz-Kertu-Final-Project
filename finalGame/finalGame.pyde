@@ -18,12 +18,16 @@ class Game:
         self.chicks=[]
         self.cars=[]
         
+        # Defining spawn points
+        xPoints = [0, 1024, 1000, 500, 200]
+        yPoints = [400, 600, 200, 300, 200]
+        
         #Creating different cars 
-        self.cars.append(Car(0, 400, 40,2)) 
-        self.cars.append(Car(1024, 600, 40,-2))
-        self.cars.append(Car(1000, 200, 40,-2))
-        self.cars.append(Car(500, 300, 40,-2))
-        self.cars.append(Car(200, 200, 40,-2))
+        self.cars.append(Car(xPoints[0], yPoints[0], 40,2)) 
+        self.cars.append(Car(xPoints[1], yPoints[1], 40,-2))
+        self.cars.append(Car(xPoints[2], yPoints[2], 40,-2))
+        self.cars.append(Car(xPoints[3], yPoints[3], 40,-2))
+        self.cars.append(Car(xPoints[4], yPoints[4], 40,-2))
 
 
         #Creating worms/baby chicks
@@ -39,15 +43,17 @@ class Game:
         #stroke(255)
         #line(0,self.g,self.w,self.g)
         self.player.display()
-        for p in self.cars:
-            while p.display(): 
-                self.cars.remove(p)
-        for c in self.chicks:
-            c.display()
+        # for c in self.chicks:
+        #     c.display()
+        self.chicks[0].display()
+        #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                 
             
         #for future score counting
         text(str(self.score),10,25)
+    
+    def removeCar(car):
+        self.cars.remove(car)
         
 class Creature:
     def __init__(self,x,y,r,vx):
@@ -113,15 +119,15 @@ class Player(Creature):
 class Car(Creature):
     def __init__(self,x,y,r,vx): 
         Creature.__init__(self,x,y,r,vx)
-        self.delete=False
+        
     
         
     #Working on the way to delete cars that go out of frame
     def update(self):
         Creature.update(self)
         if self.x == (0-self.r) or self.x==(game.w+self.r):
-            self.delete=True 
-        return self.delete
+            game.removeCar(self)
+            
 
 
 class babyChick(Creature):
