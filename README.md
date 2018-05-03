@@ -2,9 +2,9 @@
 PLAN
 - Create the game using basic geometric shapes without the pictures in order to get the general logic 
   - Class for the Creatures /DONE 
-  1.2) Making the Player move /DONE 
-  1.3) Making the obstacles move /DONE 
-    1.3.1) Making their speed dependent on score /IN PROGRESS
+  - Making the Player move /DONE 
+  - Making the obstacles move /DONE 
+    - Making their speed dependent on score /IN PROGRESS
   1.4) Creating the reappearing food/wamrs 
   1.5) Collosion /IN PROGRESS 
     1.5.1) Different outcomes with Food or Cars 
