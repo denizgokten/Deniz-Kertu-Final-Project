@@ -1,7 +1,7 @@
 # Deniz-Kertu-Final-Project
 PLAN
-1) Create the game using basic geometric shapes without the pictures in order to get the general logic 
-  1.1) Class for the Creatures /DONE 
+- Create the game using basic geometric shapes without the pictures in order to get the general logic 
+  - Class for the Creatures /DONE 
   1.2) Making the Player move /DONE 
   1.3) Making the obstacles move /DONE 
     1.3.1) Making their speed dependent on score /IN PROGRESS
