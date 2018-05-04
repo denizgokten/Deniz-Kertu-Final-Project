@@ -14,8 +14,7 @@ class Creature:
         self.f=0
         self.dir=1
         self.img=loadImage(img)
-
-        
+    
     def update(self):
         self.x+=self.vx
         self.y+=self.vy
@@ -42,12 +41,23 @@ class Player(Creature):
     
     def distance(self, other):
         return ((self.x-other.x)**2+(self.y-other.y)**2)**0.5 
-            
+    
+    def checkBorders(self):
+        if self.x-self.r < 0: 
+            self.x=self.r 
+        elif self.x+self.r > game.w: 
+            self.x=game.w-self.r
+        
+        if self.y-self.r<0: 
+            self.y=self.r
+        elif self.y+self.r > game.h: 
+            self.y=game.h-self.r
+                    
     def update(self):
-        #print self.keyHandler
+        self.checkBorders()
         if self.keyHandler[DOWN]:
             self.vy=2
-            self.dir=1
+            self.dir=1    
         elif self.keyHandler[UP]:
             self.vy=-2
             self.dir=-1
@@ -56,7 +66,7 @@ class Player(Creature):
         
         if self.keyHandler[LEFT]:
             self.vx=-2
-            self.dir=-1
+            self.dir=-1    
         elif self.keyHandler[RIGHT]:
             self.vx=2
             self.dir=1
@@ -82,7 +92,6 @@ class Car(Creature):
     def update(self):
         Creature.update(self)
         if self.x == (0-self.r) or self.x==(game.w+self.r):
-            print 'ya'
             game.removeCar(self)
             
 
@@ -96,22 +105,20 @@ class babyChick(Creature):
         pass
 
 
-xPoints = [0, 1024, 0, 1024, 0]
-yPoints = [100, 200, 300, 400, 500]
+xPoints = [0, 1024]
+yPoints = [192, 317, 479, 612]
 
 global myCars
-myCars = []
-myCars.append(Car(xPoints[0], yPoints[0], 40,2,'car1.png')) 
-myCars.append(Car(xPoints[1], yPoints[1], 40,-2,'car1.png'))
-myCars.append(Car(xPoints[2], yPoints[2], 40,2,'car1.png'))
-myCars.append(Car(xPoints[3], yPoints[3], 40,-2,'car1.png'))
-myCars.append(Car(xPoints[4], yPoints[4], 40,2,'car1.png'))
+myCars = [] 
+myCars.append(Car(xPoints[1], yPoints[0], 55,-1.75,'car1.png'))
+myCars.append(Car(xPoints[0], yPoints[1], 55,1.75,'car1.png'))
+myCars.append(Car(xPoints[1], yPoints[2], 55,-1.75,'car1.png'))
+myCars.append(Car(xPoints[0], yPoints[3], 55,1.75,'car1.png'))
 
 class Game:
     def __init__(self):
         self.w=1024
         self.h=800
-        self.g=700
         self.player=Player(500,700,30,0,'car1.png')
         self.paused= False
         self.state='MENU'
@@ -126,16 +133,6 @@ class Game:
         self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
         self.cars=[]
-    
-
-        #Creating different cars 
-        # for i in range(5):
-        #     self.cars.append(copy.deepcopy(myCars[i]))
-        # self.cars.append(Car(self.xPoints[0], self.yPoints[0], 40,2)) 
-        # self.cars.append(Car(self.xPoints[1], self.yPoints[1], 40,-2))
-        # self.cars.append(Car(self.xPoints[2], self.yPoints[2], 40,2))
-        # self.cars.append(Car(self.xPoints[3], self.yPoints[3], 40,-2))
-        # self.cars.append(Car(self.xPoints[4], self.yPoints[4], 40,2))
 
 
         #Creating worms/baby chicks
@@ -169,16 +166,13 @@ class Game:
         # Updating cars list
         now = millis()
         print now
-        if now - self.startTime > 1000:
+        if now - self.startTime > 945:
             self.startTime = now
-            # for i in range(5):
-            randCar = random.randint(0, 4)
+            randCar = random.randint(0, 3)
             self.cars.append(copy.deepcopy(myCars[randCar]))
     
     def removeCar(self, car):
-        print("remove")
         self.cars.remove(car)
-        # self.cars.append(Car(self.xPoints[0], self.yPoints[0], 40 ,2))
         
     
 game = Game()
