@@ -117,8 +117,8 @@ class Game:
     
 
         #Creating different cars 
-        for i in range(5):
-            self.cars.append(copy.deepcopy(myCars[i]))
+        # for i in range(5):
+        #     self.cars.append(copy.deepcopy(myCars[i]))
         # self.cars.append(Car(self.xPoints[0], self.yPoints[0], 40,2)) 
         # self.cars.append(Car(self.xPoints[1], self.yPoints[1], 40,-2))
         # self.cars.append(Car(self.xPoints[2], self.yPoints[2], 40,2))
@@ -158,8 +158,9 @@ class Game:
         print now
         if now - self.startTime > 1000:
             self.startTime = now
-            for i in range(5):
-                self.cars.append(myCars[i])
+            # for i in range(5):
+            randCar = random.randint(0, 4)
+            self.cars.append(copy.deepcopy(myCars[randCar]))
     
     def removeCar(self, car):
         print("remove")
