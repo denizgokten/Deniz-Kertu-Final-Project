@@ -60,7 +60,9 @@ class Player(Creature):
             if self.distance(c) < self.r+c.r: 
                 print "ups"
         for c in game.chicks: 
-            if self.distance(c) < self.r+c.r: 
+            if self.distance(c) < self.r+c.r:
+                game.chickcnt += 1
+                print game.chickcnt
                 print "njom" 
                 
     def moving(self): 
@@ -136,7 +138,7 @@ class Game:
     def createGame(self):
         self.x=0
         self.y=0
-        self.cnt=0
+        self.chickcnt=0
         self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
         self.cars=[]
@@ -154,6 +156,7 @@ class Game:
         for car in self.cars:
             car.update()
             car.display()
+            
         self.chicks[0].display()
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                 
