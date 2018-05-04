@@ -2,7 +2,7 @@ import random
 import copy
 
 class Creature:
-    def __init__(self,x,y,r,vx):
+    def __init__(self,x,y,r,vx,img):
         self.x=x
         self.y=y
         self.r=r
@@ -10,23 +10,34 @@ class Creature:
         self.h=self.r*2
         self.vx=vx
         self.vy=0
+        
+        self.f=0
         self.dir=1
+        self.img=loadImage(img)
+
         
     def update(self):
         self.x+=self.vx
         self.y+=self.vy
  
     def display(self):
+        self.update()
         stroke(0,255,40)
         noFill()
         ellipse(self.x-game.x,self.y,self.r*2,self.r*2)
         stroke(255,50,0)
         
+       # if self.dir > 0:
+       #     image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
+       # else:
+        #    image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
+                 
+        
         
 
 class Player(Creature):
-    def __init__(self,x,y,r,vx):
-        Creature.__init__(self,x,y,r,vx)
+    def __init__(self,x,y,r,vx,img):
+        Creature.__init__(self,x,y,r,vx,img)
         self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
     
     def distance(self, other):
@@ -62,8 +73,8 @@ class Player(Creature):
             
     
 class Car(Creature):
-    def __init__(self,x,y,r,vx): 
-        Creature.__init__(self,x,y,r,vx)
+    def __init__(self,x,y,r,vx,img): 
+        Creature.__init__(self,x,y,r,vx,img)
         
     
         
@@ -77,8 +88,8 @@ class Car(Creature):
 
 
 class babyChick(Creature):
-    def __init__(self,x,y,r,vx): 
-        Creature.__init__(self,x,y,r,vx) 
+    def __init__(self,x,y,r,vx,img): 
+        Creature.__init__(self,x,y,r,vx,img) 
         self.vx=1
         
     def update(self):
@@ -90,18 +101,18 @@ yPoints = [100, 200, 300, 400, 500]
 
 global myCars
 myCars = []
-myCars.append(Car(xPoints[0], yPoints[0], 40,2)) 
-myCars.append(Car(xPoints[1], yPoints[1], 40,-2))
-myCars.append(Car(xPoints[2], yPoints[2], 40,2))
-myCars.append(Car(xPoints[3], yPoints[3], 40,-2))
-myCars.append(Car(xPoints[4], yPoints[4], 40,2))
+myCars.append(Car(xPoints[0], yPoints[0], 40,2,'car1.png')) 
+myCars.append(Car(xPoints[1], yPoints[1], 40,-2,'car1.png'))
+myCars.append(Car(xPoints[2], yPoints[2], 40,2,'car1.png'))
+myCars.append(Car(xPoints[3], yPoints[3], 40,-2,'car1.png'))
+myCars.append(Car(xPoints[4], yPoints[4], 40,2,'car1.png'))
 
 class Game:
     def __init__(self):
         self.w=1024
         self.h=800
         self.g=700
-        self.player=Player(500,700,30,0)
+        self.player=Player(500,700,30,0,'car1.png')
         self.paused= False
         self.state='MENU'
         self.name= ''
@@ -112,6 +123,7 @@ class Game:
         self.x=0
         self.y=0
         self.cnt=0
+        self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
         self.cars=[]
     
@@ -127,14 +139,15 @@ class Game:
 
 
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,10,1))
-        self.chicks.append(babyChick(400,400,10,1))
-        self.chicks.append(babyChick(700,300,10,1))
-        self.chicks.append(babyChick(800,500,10,1))
-        self.chicks.append(babyChick(350,200,10,1))
-        self.chicks.append(babyChick(250,600,10,1))
+        self.chicks.append(babyChick(150,300,10,1,'car1.png'))
+        self.chicks.append(babyChick(400,400,10,1,'car1.png'))
+        self.chicks.append(babyChick(700,300,10,1,'car1.png'))
+        self.chicks.append(babyChick(800,500,10,1,'car1.png'))
+        self.chicks.append(babyChick(350,200,10,1,'car1.png'))
+        self.chicks.append(babyChick(250,600,10,1,'car1.png'))
 
     def display(self):
+        image(self.bgIMG,0,0) #put the background yay
         #fill(255)
         #stroke(255)
         #line(0,self.g,self.w,self.g)
