@@ -62,6 +62,7 @@ class Player(Creature):
                 # game.chickcnt += 1
                 game.removeChick()
                 game.increaseCarSpeed()
+                game.score += 1
                 print game.chickcnt
                 print "njom" 
                 
@@ -123,15 +124,15 @@ class babyChick(Creature):
         pass
 
     
-xPoints = [0, 1024]
-yPoints = [192, 317, 479, 612]
+# xPoints = [0, 1024]
+# yPoints = [192, 317, 479, 612]
 
-global myCars
-myCars = [] 
-myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png',0))
-myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png',0))
-myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png',0))
-myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png',0))
+# global myCars
+# myCars = [] 
+# myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png',0))
+# myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png',0))
+# myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png',0))
+# myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png',0))
 
 class Game:
     def __init__(self):
@@ -143,6 +144,7 @@ class Game:
         self.name= ''
         self.score=0
         self.startTime = millis()
+        self.myCars=[]
 
     def createGame(self):
         self.x=0
@@ -153,6 +155,13 @@ class Game:
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
+        xPoints = [0, 1024]
+        yPoints = [192, 317, 479, 612]
+        
+        self.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png',0))
+        self.myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png',0))
+        self.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png',0))
+        self.myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png',0))
 
         #Creating worms/baby chicks
         self.chicks.append(babyChick(150,300,10,1,'car1.png',0))
@@ -171,7 +180,7 @@ class Game:
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
         #for future score counting
-        text(str(self.score),10,25)
+        text(str(self.score),10,40)
     
     def update(self):
         # Updating cars list
@@ -179,7 +188,7 @@ class Game:
         if now - self.startTime > 945:
             self.startTime = now
             randCar = random.randint(0, 3)
-            self.cars.append(copy.deepcopy(myCars[randCar]))
+            self.cars.append(copy.deepcopy(game.myCars[randCar]))
     
     def removeCar(self, car):
         self.cars.remove(car)
@@ -189,9 +198,18 @@ class Game:
         self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),30,1,'car1.png',0))
     
     def increaseCarSpeed(self): 
-        for car in game.cars: 
-            if car.vx < 0:
-                car.vx -= 2
+        for car1 in self.cars: 
+            if car1.vx < 0:
+                car1.vx -= 0.001
+                for car2 in self.myCars: 
+                    if car2.vx <0:
+                        car2.vx -= 0.001
+            if car1.vx > 0:
+                car1.vx += 0.001
+                for car2 in self.myCars: 
+                    if car2.vx > 0:
+                        car2.vx += 0.001
+                
     
 game = Game()
 
