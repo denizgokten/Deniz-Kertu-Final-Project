@@ -31,12 +31,12 @@ class Creature:
         #    image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
                  
         
-        
 
 class Player(Creature):
     def __init__(self,x,y,r,vx,img):
         Creature.__init__(self,x,y,r,vx,img)
         self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
+        self.eat=False 
     
     def distance(self, other):
         return ((self.x-other.x)**2+(self.y-other.y)**2)**0.5 
@@ -64,6 +64,7 @@ class Player(Creature):
                 game.chickcnt += 1
                 print game.chickcnt
                 print "njom" 
+                return self.eat == True 
                 
     def moving(self): 
         if self.keyHandler[DOWN]:
@@ -111,18 +112,9 @@ class babyChick(Creature):
         self.vx=1
         
     def update(self):
-        pass
+        if Player.eat: 
+            game.removeChick(self) 
 
-
-xPoints = [0, 1024]
-yPoints = [192, 317, 479, 612]
-
-global myCars
-myCars = [] 
-myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png'))
-myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png'))
-myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png'))
-myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png'))
 
 class Game:
     def __init__(self):
@@ -142,13 +134,27 @@ class Game:
         self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
         self.cars=[]
+        self.myCars=[]
+        
+        # All possible cars
+        xPoints = [0, 1024]
+        yPoints = [192, 317, 479, 612]
+        
+        self.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png'))
+        self.myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png'))
+        self.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png'))
+        self.myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png'))
+        
+        #First four chicks 
+        xPoints=[365]
+        yPoints=[50] 
+        self.chicks.append(babyChick(xPoints[0],yPoints[0],30,0,'somepic.png'))  
 
-
-        #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,10,1,'car1.png'))
+  
         
     def display(self):
-        image(self.bgIMG,0,0) #put the background yay
+        #background picture 
+        image(self.bgIMG,0,0)
         
         self.player.update()
         self.player.display()
@@ -156,24 +162,28 @@ class Game:
         for car in self.cars:
             car.update()
             car.display()
-            
+        
         self.chicks[0].display()
-        #create a global chickcounter, which is initially zero, which will update after a chick is eaten
-                
-            
+                            
         #for future score counting
         text(str(self.score),10,25)
     
     def update(self):
         # Updating cars list
         now = millis()
-        if now - self.startTime > 945:
+        if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
-            self.cars.append(copy.deepcopy(myCars[randCar]))
+            self.cars.append(copy.deepcopy(self.myCars[randCar]))
+        
+        # Updating chicks list 
+        
     
     def removeCar(self, car):
         self.cars.remove(car)
+    
+    def removeChick(self,chick): 
+        self.chicks.remove(chick) 
         
     
 game = Game()
@@ -186,8 +196,9 @@ def setup():
     
 def draw():
     background(0)
-    game.display()
     game.update()
+    game.display()
+
     
 def keyPressed():
     game.player.keyHandler[keyCode]=True
