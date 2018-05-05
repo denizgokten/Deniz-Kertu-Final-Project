@@ -61,6 +61,7 @@ class Player(Creature):
             if self.distance(c) < self.r+c.r:
                 # game.chickcnt += 1
                 game.removeChick()
+                game.increaseCarSpeed()
                 print game.chickcnt
                 print "njom" 
                 
@@ -87,16 +88,13 @@ class Player(Creature):
         
         # print(self.keyImage[UP])
         if self.keyHandler[UP]:
-            image(self.keyImage[UP],self.x-self.r-game.x,self.y-self.r,self.w,self.h,0,int(self.f)*self.h,self.w,int(self.f+1)*self.h)
+            image(self.keyImage[UP],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
         elif self.keyHandler[LEFT]:
-            print('here')
             image(self.keyImage[LEFT],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
-
         elif self.keyHandler[RIGHT]:
-            image(self.keyImage[RIGHT],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
-            
+            image(self.keyImage[RIGHT],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)    
         else:
-            image(self.keyImage[DOWN],self.x-self.r-game.x,self.y-self.r,self.w,self.h,0,int(self.f)*self.h,self.w,int(self.f+1)*self.h)
+            image(self.keyImage[DOWN],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
 
         
             
@@ -124,7 +122,7 @@ class babyChick(Creature):
     def update(self):
         pass
 
-
+    
 xPoints = [0, 1024]
 yPoints = [192, 317, 479, 612]
 
@@ -189,7 +187,11 @@ class Game:
     def removeChick(self):
         del self.chicks[0]
         self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),30,1,'car1.png',0))
-        
+    
+    def increaseCarSpeed(self): 
+        for car in game.cars: 
+            if car.vx < 0:
+                car.vx -= 2
     
 game = Game()
 
