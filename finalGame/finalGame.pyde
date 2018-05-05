@@ -10,12 +10,10 @@ class Creature:
         self.h=self.r*2
         self.vx=vx
         self.vy=0
-        
         self.f=0
         self.dir=1
         self.img=loadImage(img)
-
-        
+    
     def update(self):
         self.x+=self.vx
         self.y+=self.vy
@@ -24,7 +22,7 @@ class Creature:
         self.update()
         stroke(0,255,40)
         noFill()
-        ellipse(self.x-game.x,self.y,self.r*2,self.r*2)
+        ellipse(self.x-game.x,self.y,self.w,self.h)
         stroke(255,50,0)
         
        # if self.dir > 0:
@@ -42,12 +40,35 @@ class Player(Creature):
     
     def distance(self, other):
         return ((self.x-other.x)**2+(self.y-other.y)**2)**0.5 
+    
+    def checkBorders(self):
+        if self.x-self.r < 0: 
+            self.x=self.r 
+        elif self.x+self.r > game.w: 
+            self.x=game.w-self.r
+        
+        if self.y-self.r<0: 
+            self.y=self.r
+        elif self.y+self.r > game.h: 
+            self.y=game.h-self.r
             
-    def update(self):
-        #print self.keyHandler
+    def distance(self, other):
+        return ((self.x-other.x)**2+(self.y-other.y)**2)**0.5 
+    
+    def collosion(self):
+        for c in game.cars: 
+            if self.distance(c) < self.r+c.r: 
+                print "ups"
+        for c in game.chicks: 
+            if self.distance(c) < self.r+c.r:
+                game.chickcnt += 1
+                print game.chickcnt
+                print "njom" 
+                
+    def moving(self): 
         if self.keyHandler[DOWN]:
             self.vy=2
-            self.dir=1
+            self.dir=1    
         elif self.keyHandler[UP]:
             self.vy=-2
             self.dir=-1
@@ -56,33 +77,30 @@ class Player(Creature):
         
         if self.keyHandler[LEFT]:
             self.vx=-2
-            self.dir=-1
+            self.dir=-1    
         elif self.keyHandler[RIGHT]:
             self.vx=2
             self.dir=1
         else: 
             self.vx=0
-            
+        
         self.x+=self.vx
         self.y+=self.vy
         
-        #to detect collosion 
-        # for c in self.cars: 
-        #     if self.distance(c)<self.r+c.r: 
-        #         pass
+                    
+    def update(self):
+        self.collosion()
+        self.checkBorders()
+        self.moving()
             
     
 class Car(Creature):
     def __init__(self,x,y,r,vx,img): 
         Creature.__init__(self,x,y,r,vx,img)
         
-    
-        
-    #Working on the way to delete cars that go out of frame
     def update(self):
         Creature.update(self)
         if self.x == (0-self.r) or self.x==(game.w+self.r):
-            print 'ya'
             game.removeCar(self)
             
 
@@ -96,23 +114,21 @@ class babyChick(Creature):
         pass
 
 
-xPoints = [0, 1024, 0, 1024, 0]
-yPoints = [100, 200, 300, 400, 500]
+xPoints = [0, 1024]
+yPoints = [192, 317, 479, 612]
 
 global myCars
-myCars = []
-myCars.append(Car(xPoints[0], yPoints[0], 40,2,'car1.png')) 
-myCars.append(Car(xPoints[1], yPoints[1], 40,-2,'car1.png'))
-myCars.append(Car(xPoints[2], yPoints[2], 40,2,'car1.png'))
-myCars.append(Car(xPoints[3], yPoints[3], 40,-2,'car1.png'))
-myCars.append(Car(xPoints[4], yPoints[4], 40,2,'car1.png'))
+myCars = [] 
+myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png'))
+myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png'))
+myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png'))
+myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png'))
 
 class Game:
     def __init__(self):
         self.w=1024
         self.h=800
-        self.g=700
-        self.player=Player(500,700,30,0,'car1.png')
+        self.player=Player(500,700,45,0,'car1.png')
         self.paused= False
         self.state='MENU'
         self.name= ''
@@ -122,42 +138,25 @@ class Game:
     def createGame(self):
         self.x=0
         self.y=0
-        self.cnt=0
+        self.chickcnt=0
         self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
         self.cars=[]
-    
-
-        #Creating different cars 
-        # for i in range(5):
-        #     self.cars.append(copy.deepcopy(myCars[i]))
-        # self.cars.append(Car(self.xPoints[0], self.yPoints[0], 40,2)) 
-        # self.cars.append(Car(self.xPoints[1], self.yPoints[1], 40,-2))
-        # self.cars.append(Car(self.xPoints[2], self.yPoints[2], 40,2))
-        # self.cars.append(Car(self.xPoints[3], self.yPoints[3], 40,-2))
-        # self.cars.append(Car(self.xPoints[4], self.yPoints[4], 40,2))
 
 
         #Creating worms/baby chicks
         self.chicks.append(babyChick(150,300,10,1,'car1.png'))
-        self.chicks.append(babyChick(400,400,10,1,'car1.png'))
-        self.chicks.append(babyChick(700,300,10,1,'car1.png'))
-        self.chicks.append(babyChick(800,500,10,1,'car1.png'))
-        self.chicks.append(babyChick(350,200,10,1,'car1.png'))
-        self.chicks.append(babyChick(250,600,10,1,'car1.png'))
-
+        
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
-        #fill(255)
-        #stroke(255)
-        #line(0,self.g,self.w,self.g)
+        
         self.player.update()
         self.player.display()
+        
         for car in self.cars:
             car.update()
             car.display()
-        # for c in self.chicks:
-        #     c.display()
+            
         self.chicks[0].display()
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                 
@@ -168,17 +167,13 @@ class Game:
     def update(self):
         # Updating cars list
         now = millis()
-        print now
-        if now - self.startTime > 1000:
+        if now - self.startTime > 945:
             self.startTime = now
-            # for i in range(5):
-            randCar = random.randint(0, 4)
+            randCar = random.randint(0, 3)
             self.cars.append(copy.deepcopy(myCars[randCar]))
     
     def removeCar(self, car):
-        print("remove")
         self.cars.remove(car)
-        # self.cars.append(Car(self.xPoints[0], self.yPoints[0], 40 ,2))
         
     
 game = Game()
@@ -195,7 +190,6 @@ def draw():
     game.update()
     
 def keyPressed():
-    print (keyCode)
     game.player.keyHandler[keyCode]=True
          
 def keyReleased():
