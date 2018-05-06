@@ -4,26 +4,28 @@ PLAN
   - Class for the Creatures /DONE 
   - Making the Player move /DONE 
   - Making the obstacles move /DONE 
-  - Continuous generation of cars
-    - Making their speed dependent on score /IN PROGRESS
-  - Creating the reappearing food/wamrs 
+  - Continuous generation of cars /DONE
+    - Making their speed dependent on score /DONE 
+    - Figure out a suitable increasing function to make the game playable for an adequate amount of time
+  - Creating the reappearing food/wamrs /DONE  
   - Collosion /IN PROGRESS 
     - Different outcomes with Food or Cars 
     - Disabling it for the duration of 'fly-back' when the player dies and has to return to the initial position 
-  - Deleting things that exit the screen to avoid memory overlaod /IN PROGRES
-  - Creating a scoring system 
+  - Deleting things that exit the screen to avoid memory overlaod /DONE
+  - Creating a scoring system /IN PROGRESS
   - Creating a lives system 
     - Maybe creating an opportunity to earn extra lives, appearing heart shapes from time to time 
 - Create the framework for the game 
-  - Initial screen
-    - Play button 
+  - Initial screen /IN PROGRESS
+    - Play button /IN PROGRESS
       - "Please eneter you name: " To save for the leaderboard thing 
     - Character choice 
     - Leaderboard 
-  - Pause screen 
+  - Pause screen /IN PROGRESS
   - Game over screen and display of all previous scores
  
 - Adding the graphics 
-  - Spritesheet for the chicken /FOUND(Kertu has) 
-  - General Background /Deniz in progress 
-  - Warms and cars 
+  - Spritesheet for the chicken /FOUND(Kertu has), did not use 
+    - Self-made spritesheet for the player from all angles /DONE
+  - General Background /DONE, SELF-MADE 
+  - Warms and cars/ IN PROGRESS 
