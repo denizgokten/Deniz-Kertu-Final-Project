@@ -139,12 +139,19 @@ class babyChick(Creature):
     def display(self):
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
+class Life(Creature):
+    def __init__(self, x, y, r, vx, F, img):
+        Creature.__init__(self, x, y, r, vx, F)
+        self.img = loadImage(img)
+        
+    def display(self):
+        image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
 xPoints = [0, 1024]
 yPoints = [192, 317, 479, 612]
 
-global myCars
-myCars = [] 
+# global myCars
+# myCars = [] 
 
 class Game:
     def __init__(self):
@@ -168,10 +175,10 @@ class Game:
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
-        myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
-        myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
-        myCars.append(Car(xPoints[1], yPoints[2], 55,-1,0,1))
-        myCars.append(Car(xPoints[0], yPoints[3], 55,1,1,1))
+        self.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
+        self.myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
+        self.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,0,1))
+        self.myCars.append(Car(xPoints[0], yPoints[3], 55,1,1,1))
         
         #Creating worms/baby chicks
         self.chicks.append(babyChick(150,300,40,1,0,'finalGame/lion.png'))
@@ -201,12 +208,13 @@ class Game:
             self.startTime = now
             randCar = random.randint(0, 3)
             #self.cars.append(myCars[randCar])
-            self.cars.append(copy.copy(myCars[randCar]))
+            self.cars.append(copy.copy(self.myCars[randCar]))
         print ("cars", len(self.cars) )
             
 
     def removeCar(self, car):
-        self.cars.remove(car)
+        if car in self.cars:
+            self.cars.remove(car)
         print 'del'
         
     def removeChick(self):
@@ -214,17 +222,30 @@ class Game:
         self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,0,'finalGame/lion.png'))
     
     def increaseCarSpeed(self): 
-        for car1 in self.cars: 
-            if car1.vx < 0:
-                car1.vx -= 0.001
-                for car2 in self.myCars: 
-                    if car2.vx <0:
-                        car2.vx -= 0.001
-            if car1.vx > 0:
-                car1.vx += 0.001
-                for car2 in self.myCars: 
-                    if car2.vx > 0:
-                        car2.vx += 0.001
+        for car in self.cars:
+            if car.vx<0:
+                car.vx-=0.5
+            else:
+                car.vx += 0.5
+        
+        for car in self.myCars:
+            if car.vx<0:
+                car.vx-=0.5
+            else:
+                car.vx += 0.5
+        
+        
+        # for car1 in self.cars: 
+        #     if car1.vx < 0:
+        #         car1.vx -=0.5
+        #         for car2 in self.myCars: 
+        #             if car2.vx <0:
+        #                 car2.vx -= 0.5
+        #     if car1.vx > 0:
+        #         car1.vx += 0.5
+        #         for car2 in self.myCars: 
+        #             if car2.vx > 0:
+        #                 car2.vx += 0.5
                 
     
 game = Game()
