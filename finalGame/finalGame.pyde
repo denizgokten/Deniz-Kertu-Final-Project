@@ -112,7 +112,8 @@ class Car(Creature):
         
     def update(self):
         Creature.update(self)
-        if self.x == (0-self.r) or self.x==(game.w+self.r):
+        if self.x < (0-self.r) or self.x > (game.w+self.r):
+            print("car should remove")
             game.removeCar(self)
             
     def display(self):
@@ -178,14 +179,14 @@ class Game:
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
         
-        self.player.update()
-        self.player.display()
-        
         for car in self.cars:
             car.update()
             car.display()
+            
+        self.player.update()
+        self.player.display()
+        
     
-
         self.chicks[0].display()
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
@@ -201,10 +202,9 @@ class Game:
             randCar = random.randint(0, 3)
             #self.cars.append(myCars[randCar])
             self.cars.append(copy.copy(myCars[randCar]))
-        print len(self.cars) 
+        print ("cars", len(self.cars) )
             
-    
-    
+
     def removeCar(self, car):
         self.cars.remove(car)
         print 'del'
