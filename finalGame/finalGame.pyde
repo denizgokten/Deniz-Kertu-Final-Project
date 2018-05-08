@@ -59,6 +59,8 @@ class Player(Creature):
                 game.lives -= 1
                 game.player.x=500
                 game.player.y=800
+                if game.lives == 0:
+                    game.state='gameover'
         for c in game.chicks: 
             if self.distance(c) < self.r+c.r:
                 game.removeChick()
@@ -161,7 +163,7 @@ class Game:
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,40,1,'finalGame/car1.png',0))
+        self.chicks.append(babyChick(150,300,40,1,'finalGame/lion.png',0))
         
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
@@ -189,10 +191,10 @@ class Game:
             self.startTime = now
             randCar = random.randint(0, 3)
             myCars = []
-            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car.png',1))
-            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'finalGame/car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'finalGame/car.png',1))
 
             self.cars.append(myCars[randCar])
 
@@ -205,7 +207,7 @@ class Game:
         
     def removeChick(self):
         del self.chicks[0]
-        self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,'finalGame/car1.png',0))
+        self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,'finalGame/lion.png',0))
     
     def increaseCarSpeed(self): 
         for car1 in self.cars: 
@@ -229,18 +231,20 @@ def setup():
     game.createGame()
     
     
-    
 def draw():
+    # myFont = createFont
+    global textSize    
+
     if game.state=="menu":
         background(loadImage('finalGame/menu.png'))
-        if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+260 and game.h//2-30 <= mouseY <= game.h//2+20:
+        if game.state=='menu' and 560 <= mouseX <= 900 and 600 <= mouseY <= 200:
+        # if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+300 and game.h//2-30 <= mouseY <= game.h//2+30:
             fill(250,255,50)
-    
-        # else: 
+ 
+        text("SHEEP ON THE RUN",110,160)
+        text("GO",570,400)
+        textSize(85)
         fill(245)
-        textSize(65)
-        text("SHEEP ON THE GO",239,160)
-        text("Play Game",610,400)
     elif game.state == 'play': 
         if not game.paused:
             background(255,50,50) 
@@ -248,8 +252,15 @@ def draw():
             game.update()
         else:
             fill(250,55,50)
-            textSize(80)
             text('STOPPP',350,400)
+            textSize(80)
+    elif game.state == 'gameover':
+        background(loadImage('finalGame/gameover.png'))
+        fill(245)
+        text("YOUR SCORE: " + str(game.score) ,239,230)
+        
+        textSize=(65)
+        
     # elif game.state=='inputName':
     #     background(0)
     #     textSize(40)
