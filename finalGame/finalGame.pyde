@@ -59,21 +59,16 @@ class Player(Creature):
                 game.lives -= 1
                 game.player.x=500
                 game.player.y=800
-                print "ups"
         for c in game.chicks: 
             if self.distance(c) < self.r+c.r:
-                # game.chickcnt += 1
                 game.removeChick()
                 game.increaseCarSpeed()
                 game.score += 10
-                print game.chickcnt
-                print "njom" 
-                
+
     def moving(self):
          
         if self.keyHandler[DOWN]:
             self.vy=2
-            #animationIndex=self.animationCounter % 4 
         elif self.keyHandler[UP]:
             self.vy=-2
         else:
@@ -88,9 +83,7 @@ class Player(Creature):
         
         self.x+=self.vx
         self.y+=self.vy
-        # self.animationCounter +=1
-        
-        # print(self.keyImage[UP])
+
         if self.keyHandler[UP]:
             image(self.keyImage[UP],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
         elif self.keyHandler[LEFT]:
@@ -133,10 +126,7 @@ class Car(Creature):
 class babyChick(Creature):
     def __init__(self,x,y,r,vx,img,F): 
         Creature.__init__(self,x,y,r,vx,img,F) 
-        #self.vx=1
         
-    def update(self):
-        pass
     
     def display(self):
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
@@ -171,7 +161,7 @@ class Game:
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(493,55,30,0,'car1.png',0))
+        self.chicks.append(babyChick(150,300,40,1,'finalGame/car1.png',0))
         
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
@@ -198,12 +188,11 @@ class Game:
         if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
-
             myCars = []
-            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'finalGame/car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'finalGame/car.png',1))
-            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'finalGame/car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'finalGame/car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car.png',1))
 
             self.cars.append(myCars[randCar])
 
