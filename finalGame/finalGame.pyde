@@ -55,7 +55,10 @@ class Player(Creature):
     
     def collosion(self):
         for c in game.cars: 
-            if self.distance(c) < self.r+c.r: 
+            if self.distance(c) < self.r+c.r:
+                game.lives -= 1
+                game.player.x=500
+                game.player.y=800
                 print "ups"
         for c in game.chicks: 
             if self.distance(c) < self.r+c.r:
@@ -139,8 +142,6 @@ class babyChick(Creature):
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
     
-
-    
 xPoints = [0, 1024]
 yPoints = [192, 317, 479, 612]
 
@@ -156,7 +157,9 @@ class Game:
         self.state='menu'
         self.name= ''
         self.score=0
+        self.lives=3
         self.startTime = millis()
+        self.myCars=[]
 
     def createGame(self):
         self.x=0
@@ -166,9 +169,9 @@ class Game:
         self.chicks=[]
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
-
+        
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,40,1,'finalGame/car1.png',0))
+        self.chicks.append(babyChick(493,55,30,0,'car1.png',0))
         
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
@@ -186,7 +189,8 @@ class Game:
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
         #for future score counting
-        text(str(self.score),10,25)
+        text(str(self.score),10,40)
+        text(str(self.lives),10,100) 
     
     def update(self):
         # Updating cars list
@@ -194,6 +198,7 @@ class Game:
         if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
+
             myCars = []
             myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'finalGame/car2.png',1))
             myCars.append(Car(xPoints[0], yPoints[1], 55,1,'finalGame/car.png',1))
@@ -201,6 +206,8 @@ class Game:
             myCars.append(Car(xPoints[0], yPoints[3], 55,1,'finalGame/car.png',1))
 
             self.cars.append(myCars[randCar])
+
+            # self.cars.append(copy.deepcopy(game.myCars[randCar]))
             
     
     
@@ -212,9 +219,18 @@ class Game:
         self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,'finalGame/car1.png',0))
     
     def increaseCarSpeed(self): 
-        for car in game.cars: 
-            if car.vx < 0:
-                car.vx -= 2
+        for car1 in self.cars: 
+            if car1.vx < 0:
+                car1.vx -= 0.001
+                for car2 in self.myCars: 
+                    if car2.vx <0:
+                        car2.vx -= 0.001
+            if car1.vx > 0:
+                car1.vx += 0.001
+                for car2 in self.myCars: 
+                    if car2.vx > 0:
+                        car2.vx += 0.001
+                
     
 game = Game()
 
