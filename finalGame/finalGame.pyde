@@ -33,7 +33,7 @@ class Player(Creature):
         Creature.__init__(self,x,y,r,vx,img,F)
         self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
         self.vy=vy 
-        self.animationCounter=0
+        # self.animationCounter=0
         
     
     def distance(self, other):
@@ -62,6 +62,7 @@ class Player(Creature):
                 # game.chickcnt += 1
                 game.removeChick()
                 game.increaseCarSpeed()
+                game.score += 10
                 print game.chickcnt
                 print "njom" 
                 
@@ -84,11 +85,11 @@ class Player(Creature):
         
         self.x+=self.vx
         self.y+=self.vy
-        self.animationCounter +=1
+        # self.animationCounter +=1
         
         # print(self.keyImage[UP])
         if self.keyHandler[UP]:
-            image(self.keyImage[UP],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
+            image(self.keyImage[UP],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
         elif self.keyHandler[LEFT]:
             image(self.keyImage[LEFT],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
         elif self.keyHandler[RIGHT]:
@@ -112,6 +113,18 @@ class Car(Creature):
         Creature.update(self)
         if self.x == (0-self.r) or self.x==(game.w+self.r):
             game.removeCar(self)
+    def display(self):
+        self.update()
+        if self.vx != 0 or self.vy !=0:
+            self.f = (self.f+0.1)%self.F
+        stroke(0,255,40)
+        noFill()
+        ellipse(self.x-game.x,self.y,self.w,self.h)
+        stroke(255,50,0)
+        image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
+
+        
+        
             
             
 class babyChick(Creature):
@@ -121,6 +134,11 @@ class babyChick(Creature):
         
     def update(self):
         pass
+    
+    def display(self):
+        image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
+    
+    
 
     
 xPoints = [0, 1024]
@@ -128,16 +146,12 @@ yPoints = [192, 317, 479, 612]
 
 global myCars
 myCars = [] 
-myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'car1.png',0))
-myCars.append(Car(xPoints[0], yPoints[1], 55,1,'car1.png',0))
-myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'car1.png',0))
-myCars.append(Car(xPoints[0], yPoints[3], 55,1,'car1.png',0))
 
 class Game:
     def __init__(self):
         self.w=1024
         self.h=800
-        self.player=Player(500,700,45,0,'car1.png',4,0)
+        self.player=Player(500,800,45,0,'front.png',4,0)
         self.paused= False
         self.state='menu'
         self.name= ''
@@ -152,10 +166,9 @@ class Game:
         self.chicks=[]
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
-        
 
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,10,1,'car1.png',0))
+        self.chicks.append(babyChick(150,300,40,1,'finalGame/car1.png',0))
         
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
@@ -166,6 +179,8 @@ class Game:
         for car in self.cars:
             car.update()
             car.display()
+    
+
             
         self.chicks[0].display()
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
@@ -176,17 +191,25 @@ class Game:
     def update(self):
         # Updating cars list
         now = millis()
-        if now - self.startTime > 945:
+        if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
-            self.cars.append(copy.deepcopy(myCars[randCar]))
+            myCars = []
+            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'finalGame/car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'finalGame/car.png',1))
+
+            self.cars.append(myCars[randCar])
+            
+    
     
     def removeCar(self, car):
         self.cars.remove(car)
         
     def removeChick(self):
         del self.chicks[0]
-        self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),30,1,'car1.png',0))
+        self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,'finalGame/car1.png',0))
     
     def increaseCarSpeed(self): 
         for car in game.cars: 
@@ -201,19 +224,21 @@ def setup():
     game.createGame()
     
     
+    
 def draw():
     if game.state=="menu":
-        background(255,78,90)
-        if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+160 and game.h//2-30 <= mouseY <= game.h//2+10:
+        background(loadImage('finalGame/menu.png'))
+        if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+260 and game.h//2-30 <= mouseY <= game.h//2+20:
             fill(250,255,50)
-        else: 
-            fill(255)
-            textSize(50)
-            text("Welcome to SHEEP ON THE GO",70,300)
-            text("Play Game",game.w//2,game.h//2)
+    
+        # else: 
+        fill(245)
+        textSize(65)
+        text("SHEEP ON THE GO",239,160)
+        text("Play Game",610,400)
     elif game.state == 'play': 
         if not game.paused:
-            background(0) 
+            background(255,50,50) 
             game.display()
             game.update()
         else:
@@ -234,22 +259,21 @@ def keyPressed():
     if game.state=='play':
         print (keyCode)
         game.player.keyHandler[keyCode]=True
-        
         if keyCode == 80:
             game.paused = not game.paused
             # game.pauseSound.play()
-    elif game.state=='inputName':
-       print keyCode, key, type(key)
-       if keyCode == 8:
-           game.name = game.name[:len(game.name)-1]
-       elif keyCode == 10:
-           f = open("highscores.csv","a")
-           f.write(game.name+','+str(game.score)+'\n')
-           f.close()
-           game.__init__()
-           game.createGame()
-       elif type(key) != int :
-           game.name += key
+    # elif game.state=='inputName':
+       # print keyCode, key, type(key)
+       # if keyCode == 8:
+       #     game.name = game.name[:len(game.name)-1]
+       # elif keyCode == 10:
+       #     f = open("highscores.csv","a")
+       #     f.write(game.name+','+str(game.score)+'\n')
+       #     f.close()
+       #     game.__init__()
+       #     game.createGame()
+       # elif type(key) != int :
+       #     game.name += key
          
 def keyReleased():
     game.player.keyHandler[keyCode]=False
