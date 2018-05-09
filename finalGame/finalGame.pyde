@@ -71,6 +71,7 @@ class Player(Creature):
                 game.removeChick()
                 game.increaseCarSpeed()
                 game.score += 10
+        
 
     def moving(self):
          
@@ -137,7 +138,6 @@ class babyChick(Creature):
         Creature.__init__(self,x,y,r,vx,F) 
         self.img=loadImage(img)
         
-    
     def display(self):
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
@@ -186,7 +186,7 @@ class Game:
         
 
         #Creating worms/baby chicks
-        self.chicks.append(babyChick(150,300,40,1,0,'finalGame/lion.png'))
+        self.chicks.append(babyChick(500,55,40,1,0,'finalGame/lion.png'))
         
         # self.bgMusic=SoundFile(this, path+"/finalGame/RUN.mp3")
         # self.bgMusic.amp(0.5)
@@ -217,7 +217,7 @@ class Game:
         if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
-            self.cars.append(myCars[randCar])
+            #self.cars.append(myCars[randCar])
             #self.cars.append(myCars[randCar])
             self.cars.append(copy.copy(self.myCars[randCar]))
         print ("cars", len(self.cars) )
@@ -236,15 +236,15 @@ class Game:
          
         for car in self.cars:
             if car.vx<0:
-                car.vx-=0.5
+                car.vx-=0.005
             else:
-                car.vx += 0.5
+                car.vx += 0.005
         
         for car in self.myCars:
             if car.vx<0:
-                car.vx-=0.5
+                car.vx-=0.005
             else:
-                car.vx += 0.5
+                car.vx += 0.005
         
         
         # for car1 in self.cars: 
@@ -299,13 +299,20 @@ def draw():
         text("YOUR SCORE: " + str(game.score) ,270,230)
         text("GO AGAIN",330,570)
     elif game.state == 'replay':
+        for i in game.cars: 
+            game.removeCar(i)
+        game.state='play'
         game.score=0
         game.lives=3
         game.display()
+        game.chicks.insert(0, babyChick(500,55,40,1,0,'finalGame/lion.png'))
+        game.myCars=[]
+        game.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
+        game.myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
+        game.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,0,1))
+        game.myCars.append(Car(xPoints[0], yPoints[3], 55,1,1,1))
         game.update()
-        fill(245)
-        text("YOUR SCORE: " + str(game.score) ,239,230)
-        textSize=(65)
+        textSize(65)
         
     # elif game.state=='inputName':
     #     background(0)
