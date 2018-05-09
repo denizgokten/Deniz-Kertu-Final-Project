@@ -72,6 +72,10 @@ class Player(Creature):
                 game.removeChick()
                 game.increaseCarSpeed()
                 game.score += 10
+        # for h in game.hearts: 
+        #     if self.distance(h) < self.r+c.r:
+        #         game.removeHeart()
+        #         game.lives+=1
         
 
     def moving(self):
@@ -120,7 +124,6 @@ class Car(Creature):
     def update(self):
         Creature.update(self)
         if self.x < (0-self.r) or self.x > (game.w+self.r):
-            print("car should remove")
             game.removeCar(self)
             
     def display(self):
@@ -142,14 +145,15 @@ class babyChick(Creature):
     def display(self):
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
-class Life(Creature):
-    def __init__(self, x, y, r, vx, F, img):
-        Creature.__init__(self, x, y, r, vx, F)
-        self.img = loadImage(img)
-        
-    def display(self):
-        image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
+# class Heart(Creature):
+#     def __init__(self, x, y, r, vx, F, img):
+#         Creature.__init__(self, x, y, r, vx, F)
+#         self.img = loadImage(img)
+#     def display(self):
+#         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
+        
+
 xPoints = [0, 1024]
 yPoints = [192, 317, 479, 612]
 
@@ -172,9 +176,9 @@ class Game:
     def createGame(self):
         self.x=0
         self.y=0
-        self.chickcnt=0
         self.bgIMG=loadImage('finalGame/Road.png')
         self.chicks=[]
+        self.hearts=[]
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
@@ -190,6 +194,9 @@ class Game:
 
         #Creating worms/baby chicks
         self.chicks.append(babyChick(500,55,40,1,0,'finalGame/lion.png'))
+    
+        # self.heart1=(Heart(400, 400,40,1,0,'finalGame/car.png'))
+        # self.hearts.append(self.heart1) 
         
         # self.bgMusic=SoundFile(this, path+"/finalGame/RUN.mp3")
         # self.bgMusic.amp(0.5)
@@ -203,9 +210,21 @@ class Game:
 
             
         self.player.update()
+            
         self.player.display()
         
         self.chicks[0].display()
+        
+        # print self.hearts
+        
+        # if self.score == 10 :
+        #     self.hearts[0].display() 
+        # elif self.score == 30:
+        #     #self.hearts.append(self.heart2)
+        #     self.hearts[0].display()
+        
+            
+    
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
         #for future score counting
@@ -221,17 +240,25 @@ class Game:
             self.startTime = now
             randCar = random.randint(0, 3)
             self.cars.append(copy.copy(self.myCars[randCar]))
-        print ("cars", len(self.cars) )
             
 
     def removeCar(self, car):
         if car in self.cars:
             self.cars.remove(car)
-        print 'del'
+        
         
     def removeChick(self):
         del self.chicks[0]
         self.chicks.append(babyChick(random.randint(100, 924),random.randint(30, 770),40,1,0,'finalGame/lion.png'))
+    
+    # def removeHeart(self): 
+    #     for i in self.hearts: 
+    #         self.hearts.remove(i)
+    
+         
+      
+        #self.hearts.append(Heart(random.randint(100, 924),random.randint(30, 770),40,1,0,'finalGame/lion.png'))
+        
     
     def increaseCarSpeed(self): 
          
@@ -247,18 +274,6 @@ class Game:
             else:
                 car.vx += 0.005
         
-        
-        # for car1 in self.cars: 
-        #     if car1.vx < 0:
-        #         car1.vx -=0.5
-        #         for car2 in self.myCars: 
-        #             if car2.vx <0:
-        #                 car2.vx -= 0.5
-        #     if car1.vx > 0:
-        #         car1.vx += 0.5
-        #         for car2 in self.myCars: 
-        #             if car2.vx > 0:
-        #                 car2.vx += 0.5
                 
 
 game = Game()
@@ -328,7 +343,7 @@ def draw():
 def keyPressed():
     game.player.keyHandler[keyCode]=True
     if game.state=='play':
-        print (keyCode)
+        # print (keyCode)
         game.player.keyHandler[keyCode]=True
         if keyCode == 80:
             game.paused = not game.paused
