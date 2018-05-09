@@ -3,8 +3,9 @@ import copy
 import os
 add_library('sound')
 
-path= os.getcwd
-print path
+# global path
+# path= os.getcwd() 
+# print path
 
 
 class Creature:
@@ -98,7 +99,7 @@ class Player(Creature):
         elif self.keyHandler[RIGHT]:
             image(self.keyImage[RIGHT],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)    
         else:
-            image(self.keyImage[DOWN],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f)*self.w,0,int(self.f+1)*self.w,self.h)
+            image(self.keyImage[DOWN],self.x-self.r-game.x,self.y-self.r,self.w,self.h,int(self.f+1)*self.w,0,int(self.f)*self.w,self.h)
 
         
             
@@ -177,7 +178,9 @@ class Game:
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
-        # self.pauseSound=SoundFile(this, path+"/finalGame/pause.mp3")
+        # self.pauseSound=SoundFile(this, path + "/finalgame/pause.mp3")
+        # self.pauseSound=SoundFile(this, path + '/Deniz-Kertu-Final-Project/finalGame/finalGame/pause.mp3')
+        # print self.pauseSound
         
         self.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
         self.myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
@@ -217,7 +220,7 @@ class Game:
         if now - self.startTime > 1200:
             self.startTime = now
             randCar = random.randint(0, 3)
-            self.cars.append(myCars[randCar])
+            # self.cars.append(myCars[randCar])
             #self.cars.append(myCars[randCar])
             self.cars.append(copy.copy(self.myCars[randCar]))
         print ("cars", len(self.cars) )
@@ -267,6 +270,7 @@ def setup():
     background(0)
     game.createGame()
 
+
     
 def draw():
     # myFont = createFont
@@ -305,7 +309,7 @@ def draw():
         game.update()
         fill(245)
         text("YOUR SCORE: " + str(game.score) ,239,230)
-        textSize=(65)
+        textSize(65)
         
     # elif game.state=='inputName':
     #     background(0)
@@ -324,7 +328,7 @@ def keyPressed():
         game.player.keyHandler[keyCode]=True
         if keyCode == 80:
             game.paused = not game.paused
-            # game.pauseSound.play()
+            game.pauseSound.play()
             
          
 def keyReleased():
