@@ -1,6 +1,11 @@
 import random 
 import copy
+import os
 add_library('sound')
+
+path= os.getcwd
+print path
+
 
 class Creature:
     def __init__(self,x,y,r,vx,img,F):
@@ -23,10 +28,10 @@ class Creature:
         self.update()
         if self.vx != 0 or self.vy !=0:
             self.f = (self.f+0.1)%self.F
-        stroke(0,255,40)
-        noFill()
-        ellipse(self.x-game.x,self.y,self.w,self.h)
-        stroke(255,50,0)
+        # stroke(0,255,40)
+        # noFill()
+        # ellipse(self.x-game.x,self.y,self.w,self.h)
+        # stroke(255,50,0)
         
 class Player(Creature):
     def __init__(self,x,y,r,vx,img,F,vy):
@@ -115,15 +120,12 @@ class Car(Creature):
         self.update()
         if self.vx != 0 or self.vy !=0:
             self.f = (self.f+0.1)%self.F
-        stroke(0,255,40)
-        noFill()
-        ellipse(self.x-game.x,self.y,self.w,self.h)
-        stroke(255,50,0)
+        # stroke(0,255,40)
+        # noFill()
+        # ellipse(self.x-game.x,self.y,self.w,self.h)
+        # stroke(255,50,0)
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
-
-        
-        
-            
+    
             
 class babyChick(Creature):
     def __init__(self,x,y,r,vx,img,F): 
@@ -161,10 +163,14 @@ class Game:
         self.chicks=[]
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
-        
+        # self.pauseSound=SoundFile(this, path+"/finalGame/pause.mp3")
+
         #Creating worms/baby chicks
         self.chicks.append(babyChick(150,300,40,1,'finalGame/lion.png',0))
         
+        # self.bgMusic=SoundFile(this, path+"/finalGame/RUN.mp3")
+        # self.bgMusic.amp(0.5)
+        # self.bgMusic.play()
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
         
@@ -174,15 +180,15 @@ class Game:
         for car in self.cars:
             car.update()
             car.display()
-    
-
-            
+        
         self.chicks[0].display()
         #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
         #for future score counting
-        text(str(self.score),10,40)
-        text(str(self.lives),10,100) 
+        fill(231,21,107)
+        textSize(50)
+        text("SCORE: " + str(self.score),10,40)
+        text("LIVES: "+ str(self.lives),10,100) 
     
     def update(self):
         # Updating cars list
@@ -191,17 +197,13 @@ class Game:
             self.startTime = now
             randCar = random.randint(0, 3)
             myCars = []
-            myCars.append(Car(xPoints[1], yPoints[0], 55,-1,'finalGame/car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[1], 55,1,'finalGame/car.png',1))
-            myCars.append(Car(xPoints[1], yPoints[2], 55,-1,'finalGame/car2.png',1))
-            myCars.append(Car(xPoints[0], yPoints[3], 55,1,'finalGame/car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[0], 63,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[1], 63,1,'finalGame/car.png',1))
+            myCars.append(Car(xPoints[1], yPoints[2], 63,-1,'finalGame/car2.png',1))
+            myCars.append(Car(xPoints[0], yPoints[3], 63,1,'finalGame/car.png',1))
 
             self.cars.append(myCars[randCar])
-
-            # self.cars.append(copy.deepcopy(game.myCars[randCar]))
-            
-    
-    
+                
     def removeCar(self, car):
         self.cars.remove(car)
         
@@ -220,8 +222,7 @@ class Game:
                 car1.vx += 0.001
                 for car2 in self.myCars: 
                     if car2.vx > 0:
-                        car2.vx += 0.001
-                
+                        car2.vx += 0.001            
     
 game = Game()
 
@@ -229,46 +230,42 @@ def setup():
     size(game.w,game.h)
     background(0)
     game.createGame()
-    
-    
-def draw():
-    # myFont = createFont
-    global textSize    
 
+def draw():
+    global textSize  
     if game.state=="menu":
         background(loadImage('finalGame/menu.png'))
-        if game.state=='menu' and 560 <= mouseX <= 900 and 600 <= mouseY <= 200:
-        # if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+300 and game.h//2-30 <= mouseY <= game.h//2+30:
-            fill(250,255,50)
- 
+
         text("SHEEP ON THE RUN",110,160)
+        noFill()
+        noStroke()
+        rect(570, 320, 150, 100)
         text("GO",570,400)
         textSize(85)
         fill(245)
+
     elif game.state == 'play': 
         if not game.paused:
-            background(255,50,50) 
             game.display()
             game.update()
         else:
-            fill(250,55,50)
+            fill(20)
+            textSize(100)
             text('STOPPP',350,400)
-            textSize(80)
     elif game.state == 'gameover':
         background(loadImage('finalGame/gameover.png'))
-        fill(245)
-        text("YOUR SCORE: " + str(game.score) ,239,230)
-        
-        textSize=(65)
-        
-    # elif game.state=='inputName':
-    #     background(0)
-    #     textSize(40)
-    #     text("Please enter your name",game.w//2,game.h//2-200)
-    #     text(game.name,game.w//2,game.h//2)
-    # background(0) 
-    # game.display()
-    # game.update()
+        noFill()
+        noStroke()
+        rect(330, 510, 350, 120)
+        fill(234,148,185)
+        textSize(65)
+        text("YOUR SCORE: " + str(game.score) ,270,230)
+        text("GO AGAIN",330,570)
+    elif game.state == 'replay':
+        game.score=0
+        game.lives=3
+        game.display()
+        game.update()
     
 def keyPressed():
     game.player.keyHandler[keyCode]=True
@@ -278,23 +275,20 @@ def keyPressed():
         if keyCode == 80:
             game.paused = not game.paused
             # game.pauseSound.play()
-    # elif game.state=='inputName':
-       # print keyCode, key, type(key)
-       # if keyCode == 8:
-       #     game.name = game.name[:len(game.name)-1]
-       # elif keyCode == 10:
-       #     f = open("highscores.csv","a")
-       #     f.write(game.name+','+str(game.score)+'\n')
-       #     f.close()
-       #     game.__init__()
-       #     game.createGame()
-       # elif type(key) != int :
-       #     game.name += key
+            
          
 def keyReleased():
     game.player.keyHandler[keyCode]=False
     
 def mouseClicked():
-    if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+160 and game.h//2-30 <= mouseY <= game.h//2+10:
-       game.state='play'
+    if game.state=='menu' and 570 <= mouseX <= 720 and 320 <= mouseY <= 420:
+        game.state='play'
+    elif game.state=='gameover' and 330 <= mouseX <= 680 and 510 <= mouseY <= 630:
+        # game.createGame()
+        # game.display()
+        # game.update()
+        game.state='replay'
+
+        
+
         
