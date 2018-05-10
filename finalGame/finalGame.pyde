@@ -29,10 +29,6 @@ class Creature:
         self.update()
         if self.vx != 0 or self.vy !=0:
             self.f = (self.f+0.1)%self.F
-        # stroke(0,255,40)
-        # noFill()
-        # ellipse(self.x-game.x,self.y,self.w,self.h)
-        # stroke(255,50,0)
         
 class Player(Creature):
     def __init__(self,x,y,r,vx,F,img,vy):
@@ -138,10 +134,6 @@ class Car(Creature):
         self.update()
         if self.vx != 0 or self.vy !=0:
             self.f = (self.f+0.1)%self.F
-        # stroke(0,255,40)
-        # noFill()
-        # ellipse(self.x-game.x,self.y,self.w,self.h)
-        # stroke(255,50,0)
         image(self.img,self.x-self.r-game.x,self.y-self.r,self.w,self.h)
     
             
@@ -165,8 +157,7 @@ class babyChick(Creature):
 xPoints = [0, 1024]
 yPoints = [192, 317, 479, 612]
 
-# global myCars
-# myCars = [] 
+
 
 class Game:
     def __init__(self):
@@ -210,8 +201,9 @@ class Game:
         
         # self.bgMusic=SoundFile(this, '/Users/denizgokten/Desktop/Final Project/Deniz-Kertu-Final-Project/finalGame/finalGame/RUN.mp3')
         # self.bgMusic.loop()
+        
     def display(self):
-        image(self.bgIMG,0,0) #put the background yay
+        image(self.bgIMG,0,0) #put the background
         
         for car in self.cars:
             car.update()
@@ -224,19 +216,14 @@ class Game:
         
         self.chicks[0].display()
         
-        # print self.hearts
         
-        # if self.score == 10 :
+        # if self.score == 10 and len(self.hearts) == 1:
         #     self.hearts[0].display() 
         # elif self.score == 30:
-        #     #self.hearts.append(self.heart2)
         #     self.hearts[0].display()
-        
-            
     
-        #create a global chickcounter, which is initially zero, which will update after a chick is eaten
                         
-        #for future score counting
+        #scor and lives print 
         fill(231,21,107)
         textSize(50)
         text("SCORE: " + str(self.score),10,40)
