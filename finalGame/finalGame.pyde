@@ -1,7 +1,8 @@
+add_library('sound')
 import random 
 import copy
-import os
-add_library('sound')
+# import os
+
 
 # global path
 # path= os.getcwd() 
@@ -39,7 +40,8 @@ class Player(Creature):
         self.keyHandler={LEFT:False,RIGHT:False,UP:False,DOWN:False}
         self.vy=vy 
         self.img=loadImage(img)
-        # self.animationCounter=0
+        # self.scoreSound=SoundFile(this, '/Users/denizgokten/Desktop/Final Project/Deniz-Kertu-Final-Project/finalGame/finalGame/Aww.mp3')
+        # self.crashSound=SoundFile(this, '/Users/denizgokten/Desktop/Final Project/Deniz-Kertu-Final-Project/finalGame/finalGame/crash.mp3')
         
     
     def distance(self, other):
@@ -63,15 +65,18 @@ class Player(Creature):
         for c in game.cars: 
             if self.distance(c) < self.r+c.r:
                 game.lives -= 1
+                # self.crashSound.play()
                 game.player.x=500
                 game.player.y=800
                 if game.lives == 0:
                     game.state='gameover'
+                    # game.gameoverSound.play()
         for c in game.chicks: 
             if self.distance(c) < self.r+c.r:
                 game.removeChick()
                 game.increaseCarSpeed()
                 game.score += 10
+                # self.scoreSound.play()
         
 
     def moving(self):
@@ -178,22 +183,23 @@ class Game:
         self.cars=[]
         self.player.keyImage={LEFT:loadImage('finalGame/side.png'),RIGHT:loadImage('finalGame/side.png'),UP:loadImage('finalGame/back.png'),DOWN:loadImage('finalGame/front.png')}
         
-        # self.pauseSound=SoundFile(this, path + "/finalgame/pause.mp3")
-        # self.pauseSound=SoundFile(this, path + '/Deniz-Kertu-Final-Project/finalGame/finalGame/pause.mp3')
+        # self.gameoverSound=SoundFile(this,  '/Users/denizgokten/Desktop/Final Project/Deniz-Kertu-Final-Project/finalGame/finalGame/gameover.mp3')
+        # self.pauseSound=SoundFile(this, '/Deniz-Kertu-Final-Project/finalGame/finalGame/pause.mp3')
         # print self.pauseSound
+        # self.pauseSound=SoundFile(this, path + "/finalgame/pause.mp3")
+
         
-        self.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
-        self.myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
-        self.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,0,1))
-        self.myCars.append(Car(xPoints[0], yPoints[3], 55,1,1,1))
+        self.myCars.append(Car(xPoints[1], yPoints[0], 60,-1,1,0))
+        self.myCars.append(Car(xPoints[0], yPoints[1], 60,1,1,1))
+        self.myCars.append(Car(xPoints[1], yPoints[2], 60,-1,1,0))
+        self.myCars.append(Car(xPoints[0], yPoints[3], 60,1,1,1))
         
 
         #Creating worms/baby chicks
         self.chicks.append(babyChick(500,55,40,1,0,'finalGame/lion.png'))
         
-        # self.bgMusic=SoundFile(this, path+"/finalGame/RUN.mp3")
-        # self.bgMusic.amp(0.5)
-        # self.bgMusic.play()
+        # self.bgMusic=SoundFile(this, '/Users/denizgokten/Desktop/Final Project/Deniz-Kertu-Final-Project/finalGame/finalGame/RUN.mp3')
+        # self.bgMusic.loop()
     def display(self):
         image(self.bgIMG,0,0) #put the background yay
         
@@ -237,29 +243,15 @@ class Game:
          
         for car in self.cars:
             if car.vx<0:
-                car.vx-=0.005
+                car.vx-=0.05
             else:
-                car.vx += 0.005
+                car.vx += 0.05
         
         for car in self.myCars:
             if car.vx<0:
-                car.vx-=0.005
+                car.vx-=0.05
             else:
-                car.vx += 0.005
-        
-        
-        # for car1 in self.cars: 
-        #     if car1.vx < 0:
-        #         car1.vx -=0.5
-        #         for car2 in self.myCars: 
-        #             if car2.vx <0:
-        #                 car2.vx -= 0.5
-        #     if car1.vx > 0:
-        #         car1.vx += 0.5
-        #         for car2 in self.myCars: 
-        #             if car2.vx > 0:
-        #                 car2.vx += 0.5
-                
+                car.vx += 0.05
 
 game = Game()
 
@@ -288,10 +280,11 @@ def draw():
             game.display()
             game.update()
         else:
-            fill(20)
+            fill(123,191,20)
             textSize(100)
             text('STOPPP',350,400)
     elif game.state == 'gameover':
+        # game.gameoverSound.play()
         background(loadImage('finalGame/gameover.png'))
         noFill()
         noStroke()
@@ -309,20 +302,12 @@ def draw():
         game.display()
         game.chicks.insert(0, babyChick(500,55,40,1,0,'finalGame/lion.png'))
         game.myCars=[]
-        game.myCars.append(Car(xPoints[1], yPoints[0], 55,-1,0,1))
-        game.myCars.append(Car(xPoints[0], yPoints[1], 55,1,1,1))
-        game.myCars.append(Car(xPoints[1], yPoints[2], 55,-1,0,1))
-        game.myCars.append(Car(xPoints[0], yPoints[3], 55,1,1,1))
+        game.myCars.append(Car(xPoints[1], yPoints[0], 60,-1,0,0))
+        game.myCars.append(Car(xPoints[0], yPoints[1], 60,1,1,1))
+        game.myCars.append(Car(xPoints[1], yPoints[2], 60,-1,0,0))
+        game.myCars.append(Car(xPoints[0], yPoints[3], 60,1,1,1))
         game.update()
 
-    # elif game.state=='inputName':
-    #     background(0)
-    #     textSize(40)
-    #     text("Please enter your name",game.w//2,game.h//2-200)
-    #     text(game.name,game.w//2,game.h//2)
-    # background(0) 
-    # game.display()
-    # game.update()
 
     
 def keyPressed():
@@ -332,7 +317,7 @@ def keyPressed():
         game.player.keyHandler[keyCode]=True
         if keyCode == 80:
             game.paused = not game.paused
-            game.pauseSound.play()
+            # game.pauseSound.play()
             
          
 def keyReleased():
@@ -341,11 +326,10 @@ def keyReleased():
 def mouseClicked():
     if game.state=='menu' and 570 <= mouseX <= 720 and 320 <= mouseY <= 420:
         game.state='play'
+        # game.bgMusic.loop()
+
     elif game.state=='gameover' and 330 <= mouseX <= 680 and 510 <= mouseY <= 630:
-        # game.createGame()
-        # game.display()
-        # game.update()
         game.state='replay'
-    if game.state=='menu' and game.w//2 <= mouseX <= game.w//2+160 and game.h//2-30 <= mouseY <= game.h//2+10:
-       game.state='play'
+        # game.bgMusic.loop()
+
         
