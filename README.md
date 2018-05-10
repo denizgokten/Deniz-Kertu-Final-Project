@@ -6,7 +6,6 @@
   - Since there was trouble in running the soundfiles using the os.getwd() function, then right now the soundfiles are direted to a specific locaation in a specific computer and hence commented out for the purpose of the code working globally.
   - The aim of the game is to collect lions without colliding with constantly speed-increasing cars and cross the roads safely. 
   - Screenshots of how the game is supposed to look while running have been added to the 'Screenshot folder' 
-  - 
 
 
 
@@ -41,3 +40,8 @@ PLAN
     - Self-made spritesheet for the player from all angles /DONE
   - General Background /DONE, SELF-MADE 
   - Warms and cars/ DONE, self-made 
+  
+ - Adding audio 
+  - Finding soundfiles /DONE 
+    - coding the global audio /DOESNT WORK
+    - looping the soundfile /DOESNT WORK
